@@ -30,6 +30,20 @@ def get_solano_data():
 
     return response.json()
 
+
+def cleaned_data(data):
+    records = []
+
+    for item in data['Results']['series']:
+        data_points, series_id = item['data'], item['seriesID']
+
+        for point in data_points:
+            records.append((series_id, point['year'], point['period'], point['value']))
+
+    return records 
+
 if __name__ == "__main__":
     data = get_solano_data()
-    print(data)
+    clean = cleaned_data(data)
+    print(clean)
+
