@@ -42,8 +42,19 @@ def cleaned_data(data):
 
     return records 
 
+def clean_dataframe(records):
+    clean_df = pd.DataFrame(records, columns=["series_id", "year", "period", "value"])
+    clean_df["value"] = pd.to_numeric(clean_df["value"], errors="coerce")
+    clean_df["month"] = clean_df["period"].str[1:]
+    clean_df["date"] = pd.to_datetime(clean_df["year"] + "-" + clean_df["month"])
+
+    clean_df = clean_df[["series_id", "date", "value"]]
+    return clean_df
+    
+
 if __name__ == "__main__":
     data = get_solano_data()
     clean = cleaned_data(data)
-    print(clean)
+    normalized = clean_dataframe(clean)
+    print(normalized)
 
