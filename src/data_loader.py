@@ -51,6 +51,9 @@ def clean_dataframe(records):
     clean_df = clean_df[["series_id", "date", "value"]]
     return clean_df
     
+def load_multipliers():
+    return pd.read_csv("data/multipliers.csv")
+
 
 if __name__ == "__main__":
     data = get_solano_data()
@@ -58,3 +61,6 @@ if __name__ == "__main__":
     normalized = clean_dataframe(clean)
     print(normalized)
 
+    
+    multipliers = load_multipliers()
+    print(multipliers)
