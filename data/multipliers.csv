@@ -1,0 +1,25 @@
+sector_name,naics_code,supplier,induced,total_indirect,source,type1_mult,type2_mult
+"Agriculture, forestry, fishing, hunting",11,93.6,134.8,228.5,EPI 2019 (national avg),1.936,3.285
+Mining,21,224.0,166.0,390.0,EPI 2019 (national avg),3.24,4.9
+Utilities,22,515.4,442.2,957.7,EPI 2019 (national avg),6.154,10.577
+Construction,23,88.0,138.1,226.1,EPI 2019 (national avg),1.88,3.261
+Durable manufacturing,33,289.1,454.9,744.1,EPI 2019 (national avg),3.891,8.440999999999999
+Nondurable manufacturing,31,184.8,329.5,514.3,EPI 2019 (national avg),2.848,6.143
+Wholesale trade,42,107.3,128.0,235.3,EPI 2019 (national avg),2.073,3.353
+Retail trade,44,46.7,75.4,122.1,EPI 2019 (national avg),1.467,2.221
+Transportation and warehousing,48,112.8,163.3,276.0,EPI 2019 (national avg),2.128,3.76
+Truck transportation,484,108.2,83.1,191.3,"EPI 2019 (national avg, detailed)",2.082,2.9130000000000003
+Warehousing and storage,493,53.2,58.5,111.7,"EPI 2019 (national avg, detailed)",1.532,2.117
+Couriers and messengers,492,84.5,72.6,157.1,"EPI 2019 (national avg, detailed)",1.845,2.5709999999999997
+Information,51,252.0,321.1,573.1,EPI 2019 (national avg),3.52,6.731
+Finance and insurance,52,149.7,214.7,364.4,EPI 2019 (national avg),2.497,4.644
+Real estate and rental leasing,53,396.6,483.1,879.7,EPI 2019 (national avg),4.966,9.797
+"Professional, scientific, technical services",54,142.1,276.2,418.3,EPI 2019 (national avg),2.4210000000000003,5.183
+Management of companies,55,144.4,255.4,399.9,EPI 2019 (national avg),2.444,4.999
+"Administrative, support, waste management",56,45.5,89.1,134.5,EPI 2019 (national avg),1.455,2.3449999999999998
+Educational services,61,63.8,129.9,193.7,EPI 2019 (national avg),1.638,2.937
+Health care and social assistance,62,69.4,136.2,205.6,EPI 2019 (national avg),1.694,3.056
+"Arts, entertainment, recreation",71,123.3,255.2,378.5,EPI 2019 (national avg),2.2329999999999997,4.785
+Accommodation and food services,72,53.8,107.4,161.2,EPI 2019 (national avg),1.5379999999999998,2.612
+Other services,81,70.7,139.6,210.3,EPI 2019 (national avg),1.707,3.103
+Government / public administration,92,,,189.0,"Texas Comptroller (state avg, approximation)",,2.8899999999999997
