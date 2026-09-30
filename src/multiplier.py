@@ -59,6 +59,23 @@ def mult_effect(sector_name, direct_job, multiplier_type, avg_wage, tax_rate):
 
     return total_jobs, indirect_jobs, direct_wage_impact, indirect_wage_impact, total_wage_impact, tax_revenue
 
+
+def ranked_sectors(multiplier_type):
+    multiplier_df = load_multipliers()
+
+    if multiplier_type == "type1":
+        sort_column = "type1_mult"
+    else:
+        sort_column = "type2_mult"
+
+    ranked = multiplier_df.sort_values(by=sort_column, ascending=False)
+
+    top_5 = ranked.head(5)
+    bottom_5 = ranked.tail(5)
+
+    return ranked, top_5, bottom_5
+
+
 if __name__ == "__main__":
     test = employment_gap(92, 150000, 19.25, 95.1)
     print(test)
@@ -66,3 +83,5 @@ if __name__ == "__main__":
     print(tax)
     mult = mult_effect("Mining", 1000, "type2", 62000, 8.25)
     print(mult)
+    rank = ranked_sectors("type1")
+    print(rank)
