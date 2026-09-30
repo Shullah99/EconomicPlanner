@@ -27,8 +27,16 @@ multiplier_data = [
     {"sector_name": "Government / public administration", "naics_code": "92", "supplier": None, "induced": None, "total_indirect": 189.0, "source": "Texas Comptroller (state avg, approximation)"},
 ]
 
+#converts the list of dictionaries into a pandas df
 multiplier_df = pd.DataFrame(multiplier_data)
 
+#calculates multiplier effect of adding any amount of direct job into an industry
+#this would be the floor
 multiplier_df["type1_mult"] = 1 + (multiplier_df["supplier"] / 100)
+
+#calculates what type 1 does but adds any additional jobs induced that may not be directly related to the industry, but where employees spend their money
+#this would be the ceiling
 multiplier_df["type2_mult"] = 1 + (multiplier_df["total_indirect"] / 100)
+
+#converts to csv file
 multiplier_df.to_csv("data/multipliers.csv", index=False)
