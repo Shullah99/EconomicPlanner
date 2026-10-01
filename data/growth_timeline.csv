@@ -1,0 +1,25 @@
+sector_name,min_years,max_years,note
+"Agriculture, forestry, fishing, hunting",0.5,1,"seasonal, annual cycles"
+Mining,2.0,4,capital-intensive ramp-up
+Utilities,2.0,4,infrastructure-dependent
+Construction,1.0,2,project-based
+Durable manufacturing,2.0,4,facility/equipment ramp-up
+Nondurable manufacturing,2.0,4,facility/equipment ramp-up
+Wholesale trade,1.0,2,supply chain dependent
+Retail trade,0.5,1,fast hiring ramp
+Transportation and warehousing,1.0,2,fleet/facility dependent
+Truck transportation,0.5,1,fast hiring ramp
+Warehousing and storage,0.5,1,fast hiring ramp
+Couriers and messengers,0.5,1,fast hiring ramp
+Information,1.0,3,tech/talent dependent
+Finance and insurance,1.0,2,licensing/training dependent
+Real estate and rental leasing,1.0,3,market cycle dependent
+"Professional, scientific, technical services",1.0,2,talent dependent
+Management of companies,1.0,2,org growth dependent
+"Administrative, support, waste management",0.5,1,fast hiring ramp
+Educational services,1.0,2,academic calendar dependent
+Health care and social assistance,1.0,2,licensing/training dependent
+"Arts, entertainment, recreation",0.5,1,fast hiring ramp
+Accommodation and food services,0.5,1,fast hiring ramp
+Other services,0.5,1,fast hiring ramp
+Government / public administration,2.0,3,budget cycle dependent

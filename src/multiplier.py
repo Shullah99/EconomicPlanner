@@ -60,16 +60,20 @@ def mult_effect(sector_name, direct_job, multiplier_type, avg_wage, tax_rate):
     return total_jobs, indirect_jobs, direct_wage_impact, indirect_wage_impact, total_wage_impact, tax_revenue
 
 
+#ranking sectors based on their multiplier abilities
 def ranked_sectors(multiplier_type):
     multiplier_df = load_multipliers()
 
+    #decide which type to rank by
     if multiplier_type == "type1":
         sort_column = "type1_mult"
     else:
         sort_column = "type2_mult"
 
+    #ranks highest to lowest
     ranked = multiplier_df.sort_values(by=sort_column, ascending=False)
 
+    #seperate the ranked data into top 5 and bottom 5
     top_5 = ranked.head(5)
     bottom_5 = ranked.tail(5)
 
