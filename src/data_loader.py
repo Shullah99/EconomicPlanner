@@ -75,7 +75,8 @@ def clean_dataframe(records):
 def load_multipliers():
     return pd.read_csv("data/multipliers.csv")
 
-
+def load_timeline():
+    return pd.read_csv("data/growth_timeline.csv")
 
 
 if __name__ == "__main__":
@@ -84,6 +85,8 @@ if __name__ == "__main__":
     normalized = clean_dataframe(clean)
     print(normalized)
 
-    
+
+    timeline = load_timeline
+    print(timeline)
     multipliers = load_multipliers()
     print(multipliers)

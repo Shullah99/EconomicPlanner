@@ -1,5 +1,5 @@
 import pandas as pd
-from data_loader import get_solano_data, cleaned_data, clean_dataframe, load_multipliers
+from data_loader import get_solano_data, cleaned_data, clean_dataframe, load_multipliers, load_timeline
 
 #what is our employment gap, and what is it's relation to the state's employment rate
 def employment_gap(employment_rate, labor_size, avg_wage, state_employment_rate):
@@ -80,6 +80,15 @@ def ranked_sectors(multiplier_type):
     return ranked, top_5, bottom_5
 
 
+def growth_timeline(sector_name):
+    timeline = load_timeline()
+
+    result = timeline[timeline["sector_name"] == sector_name]
+
+    return result[["min_years", "max_years"]]
+
+
+
 if __name__ == "__main__":
     test = employment_gap(92, 150000, 19.25, 95.1)
     print(test)
@@ -89,3 +98,5 @@ if __name__ == "__main__":
     print(mult)
     rank = ranked_sectors("type1")
     print(rank)
+    time = growth_timeline("Construction")
+    print(time)
