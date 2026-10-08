@@ -1,5 +1,5 @@
 import pandas as pd
-from data_loader import get_solano_data, cleaned_data, clean_dataframe, load_multipliers, load_timeline
+from src.data_loader import get_solano_data, cleaned_data, clean_dataframe, load_multipliers, load_timeline
 
 #what is our employment gap, and what is it's relation to the state's employment rate
 def employment_gap(employment_rate, labor_size, avg_wage, state_employment_rate):

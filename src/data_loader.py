@@ -26,7 +26,7 @@ def get_solano_data():
     request_data = {
         "seriesid": list(solano_series.values()),
         "startyear": "2020",
-        "endyear": "2025",
+        "endyear": "2026",
         "registrationKey": bls_api_key
     }
     
