@@ -93,4 +93,27 @@ with tab1:
 
 
 with tab2:
-    ...
+    # Government has no Type I multiplier, so fall back to Type II
+    effective_type = mult_type
+    if select_sector == "Government / public administration" and mult_type == "type1":
+        effective_type = "type2"
+        st.info("Type I isn't available for Government. Showing Type II instead.")
+
+    total_jobs, indirect_jobs, direct_wages, indirect_wages, total_wages = mult_effect(
+        select_sector, direct_job_change, effective_type, avg_wage
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Total Jobs Impact", f"{total_jobs:,.0f}")
+
+    with col2:
+        st.metric("Indirect Jobs (Ripple)", f"{indirect_jobs:,.0f}")
+
+    with col3:
+        st.metric("Total Wage Impact", f"${total_wages/1e6:,.1f}M")
+
+    fig2 = go.Figure(go.Bar(x=["Direct", "Indirect", "Total"], y=[direct_job_change, indirect_jobs, total_jobs]))
+    fig2.update_layout(title="Job Impact by Stage", yaxis_title="Jobs")
+    st.plotly_chart(fig2)
