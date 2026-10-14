@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from src.data_loader import load_multipliers, get_solano_data, clean_dataframe, cleaned_data
-from src.multiplier import employment_gap
+from src.multiplier import employment_gap, mult_effect
 
 #title
 st.title("Solano County Economic Scenario Planner")
@@ -18,14 +18,19 @@ select_sector = st.sidebar.selectbox("Select Industry Sector", sector_list)
 direct_job_change = st.sidebar.number_input("Change in Direct Jobs", value=0, step=10)
 
 #radio sidebar that chooses between 2 types of multipliers
-mult_type = st.sidebar.radio("Multiplier Type", ["type1", "type2"])
+type_labels = {"type1": "Type I",
+                   "type2": "Type II"}
+mult_type = st.sidebar.radio("Multiplier Type", ["type1", "type2"], format_func=type_labels.get)
 
-#timeline sidebar
-timeframe = st.sidebar.slider("Timeframe (Years)", min_value=1, max_value=20, value=5)
 
+avg_wage = st.sidebar.number_input("Average Annual Wage ($)", value=62000, step=1000)
 
 #grab bls employment data and clean it up then pass it to pd
-employment_data = clean_dataframe(cleaned_data(get_solano_data()))
+@st.cache_data(ttl=86400)
+def load_employment_data():
+    return clean_dataframe(cleaned_data(get_solano_data()))
+
+employment_data = load_employment_data()
 
 tab1, tab2, tab3 = st.tabs(["Current Employment Status", "Investment Scenario Analysis", "Where to Invest"])
 
@@ -49,7 +54,7 @@ with tab1:
     figure = go.Figure(go.Indicator(
     mode="gauge+number",
     value=current_employment_rate,
-    title={"text": "Most Employment Rate (%)"},
+    title={"text": "Most Recent Employment Rate (%)"},
     gauge={"axis": {"range": [0, 100]}}
     ))
     st.plotly_chart(figure)
@@ -66,4 +71,7 @@ with tab1:
 
     with column3:
         st.metric("Consumption Capacity", f"{employ_gap[2]:.1f}%")
-    
+
+
+with tab2:
+    ...
