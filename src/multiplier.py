@@ -29,7 +29,7 @@ def lost_taxes(lost_wages, tax_rate):
 
     return tax_loss
 
-def mult_effect(sector_name, direct_job, multiplier_type, avg_wage, tax_rate):
+def mult_effect(sector_name, direct_job, multiplier_type, avg_wage):
     multiplier_df = load_multipliers()
 
     #strips the load_multipliers csv down to the specific sector name inputted in the function's parameters
@@ -54,10 +54,7 @@ def mult_effect(sector_name, direct_job, multiplier_type, avg_wage, tax_rate):
     total_wage_impact = direct_wage_impact + indirect_wage_impact
 
 
-    #the additional tax revenue recieved from the additional wages
-    tax_revenue = (tax_rate / 100) * total_wage_impact
-
-    return total_jobs, indirect_jobs, direct_wage_impact, indirect_wage_impact, total_wage_impact, tax_revenue
+    return total_jobs, indirect_jobs, direct_wage_impact, indirect_wage_impact, total_wage_impact
 
 
 #ranking sectors based on their multiplier abilities
@@ -94,7 +91,7 @@ if __name__ == "__main__":
     print(test)
     tax = lost_taxes(test[3], 8.25)
     print(tax)
-    mult = mult_effect("Mining", 1000, "type2", 62000, 8.25)
+    mult = mult_effect("Mining", 1000, "type2", 62000)
     print(mult)
     rank = ranked_sectors("type1")
     print(rank)
