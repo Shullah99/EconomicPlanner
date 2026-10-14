@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from src.data_loader import load_multipliers, get_solano_data, clean_dataframe, cleaned_data
-from src.multiplier import employment_gap, mult_effect
+from src.multiplier import employment_gap, mult_effect, growth_timeline
 
 #title
 st.title("Solano County Economic Scenario Planner")
@@ -93,6 +93,18 @@ with tab1:
 
 
 with tab2:
+    st.caption("Multipliers are national industry averages (EPI, 2019), not Solano-specific, so results are estimates.")
+
+    if select_sector == "Government / public administration":
+        st.caption("The Government multiplier comes from a different, state-level source and is approximate.")
+
+    # growth timeline
+    timeline = growth_timeline(select_sector)
+    min_years = timeline["min_years"].iloc[0]
+    max_years = timeline["max_years"].iloc[0]
+    st.caption(f"Typical time to full impact: {min_years:g} to {max_years:g} years (illustrative estimate).")
+
+    
     # Government has no Type I multiplier, so fall back to Type II
     effective_type = mult_type
     if select_sector == "Government / public administration" and mult_type == "type1":
