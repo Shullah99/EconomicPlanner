@@ -7,12 +7,13 @@ load_dotenv()
 bls_api_key = os.getenv("BLS_API_KEY")
 
 
-#solano series id with the appropiate type it's measuring
+#solano series id with the appropiate type it's measuring as well as state umployment rate
 solano_series = {
     "unemployment_rate": "LAUCN060950000000003",
     "unemployment": "LAUCN060950000000004",
     "employment": "LAUCN060950000000005",
-    "labor_force": "LAUCN060950000000006"
+    "labor_force": "LAUCN060950000000006",
+    "state_unemployment_rate": "LAUST060000000000003"
 }
 
 #retrive data from bls api 

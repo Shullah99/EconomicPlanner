@@ -47,8 +47,19 @@ with tab1:
     labor_rows = employment_data[employment_data["series_id"]=="LAUCN060950000000006"]
     sorted_labor_row = labor_rows.sort_values(by="date", ascending=False)
     current_labor_size = sorted_labor_row["value"].dropna().iloc[0]
-    
-    employ_gap = employment_gap(current_employment_rate, current_labor_size, 0, 0)
+
+    # latest month that has Solano data, so state and county compare the same month
+    latest_date = sorted_row.dropna(subset=["value"])["date"].iloc[0]
+
+    # California unemployment rate for that same month -> state employment rate
+    state_rows = employment_data[
+        (employment_data["series_id"] == "LAUST060000000000003")
+        & (employment_data["date"] == latest_date)
+    ]
+    state_employment_rate = 100 - state_rows["value"].iloc[0]
+
+    # employment gap, now with the real wage and state rate
+    employ_gap = employment_gap(current_employment_rate, current_labor_size, avg_wage, state_employment_rate)
 
     #guage for employment
     figure = go.Figure(go.Indicator(
@@ -71,6 +82,14 @@ with tab1:
 
     with column3:
         st.metric("Consumption Capacity", f"{employ_gap[2]:.1f}%")
+
+    col4, col5 = st.columns(2)
+
+    with col4:
+        st.metric("Employment Gap vs. California(Basis Points)", f"{employ_gap[4]:.1f} pts")
+
+    with col5:
+        st.metric("Estimated Annual Lost Wages", f"${employ_gap[3]/1e6:,.1f}M")
 
 
 with tab2:
