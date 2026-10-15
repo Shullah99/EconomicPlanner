@@ -71,10 +71,11 @@ if section == "Current Employment Status":
     figure = go.Figure(go.Indicator(
     mode="gauge+number",
     value=current_employment_rate,
-    title={"text": "Most Recent Employment Rate (%)"},
-    gauge={"axis": {"range": [0, 100]}}
+    title={"text": "Portion of the Labor Force Employed (%)"},
+    gauge={"axis": {"range": [85, 100]}}
     ))
     st.plotly_chart(figure)
+    st.caption(f"Data as of {latest_date:%B %Y}. Shows the share of the labor force that is employed (100 minus the unemployment rate). The labor force counts only people working or actively looking for work.")
 
 
     #key metrics for labor size
