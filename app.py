@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from src.data_loader import load_multipliers, get_solano_data, clean_dataframe, cleaned_data
-from src.multiplier import employment_gap, mult_effect, growth_timeline
+from src.multiplier import employment_gap, mult_effect, growth_timeline, ranked_sectors
 
 #title
 st.title("Solano County Economic Scenario Planner")
@@ -32,9 +32,15 @@ def load_employment_data():
 
 employment_data = load_employment_data()
 
-tab1, tab2, tab3 = st.tabs(["Current Employment Status", "Investment Scenario Analysis", "Where to Invest"])
+section = st.radio(
+    "Section",
+    ["Current Employment Status", "Investment Scenario Analysis", "Where to Invest"],
+    horizontal=True,
+    label_visibility="collapsed",
+)
 
-with tab1:
+#tab 1
+if section == "Current Employment Status":
     #grab the row containing the series id, sort them, and grab the most recent one
     total_rows = employment_data[employment_data["series_id"]=="LAUCN060950000000003"]
     sorted_row = total_rows.sort_values(by="date", ascending=False)
@@ -51,7 +57,7 @@ with tab1:
     # latest month that has Solano data, so state and county compare the same month
     latest_date = sorted_row.dropna(subset=["value"])["date"].iloc[0]
 
-    # California unemployment rate for that same month -> state employment rate
+    # California unemployment rate for that same month, state employment rate
     state_rows = employment_data[
         (employment_data["series_id"] == "LAUST060000000000003")
         & (employment_data["date"] == latest_date)
@@ -91,8 +97,9 @@ with tab1:
     with col5:
         st.metric("Estimated Annual Lost Wages", f"${employ_gap[3]/1e6:,.1f}M")
 
+#tab 2
+if section == "Investment Scenario Analysis":
 
-with tab2:
     st.caption("Multipliers are national industry averages (EPI, 2019), not Solano-specific, so results are estimates.")
 
     if select_sector == "Government / public administration":
@@ -129,3 +136,25 @@ with tab2:
     fig2 = go.Figure(go.Bar(x=["Direct", "Indirect", "Total"], y=[direct_job_change, indirect_jobs, total_jobs]))
     fig2.update_layout(title="Job Impact by Stage", yaxis_title="Jobs")
     st.plotly_chart(fig2)
+
+#tab 3
+if section == "Where to Invest":
+    ranked_df, top_5, bottom_5 = ranked_sectors(mult_type)
+
+    if mult_type == "type1":
+        mult_column = "type1_mult"
+    else:
+        mult_column = "type2_mult"
+
+    ranked_df = ranked_df.dropna(subset=[mult_column])
+
+
+    colors = ["#1f77b4" if i < 3 else "#c7c7c7" for i in range(len(ranked_df))]
+    fig3 = go.Figure(go.Bar(x=ranked_df[mult_column], y=ranked_df["sector_name"], orientation="h", marker_color=colors))
+    fig3.update_layout(title="Ranked Sectors By Multiplier", xaxis_title="Total Jobs Per Direct Job", yaxis=dict(autorange="reversed"), height=700)
+    st.plotly_chart(fig3)
+
+    top_sector = ranked_df["sector_name"].iloc[0]
+    top_value = ranked_df[mult_column].iloc[0]
+    st.write(f"**{top_sector}** has the highest ripple effect per direct job ({top_value:.1f} total jobs for every direct job), based on national industry averages.")
+    st.caption("This ranks ripple effect per direct job, not return per dollar invested, and it doesn't mean Solano has a large presence in that industry.")
