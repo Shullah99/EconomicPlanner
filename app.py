@@ -6,6 +6,16 @@ from datetime import datetime
 from src.data_loader import load_multipliers, get_solano_data, clean_dataframe, cleaned_data
 from src.multiplier import employment_gap, mult_effect, growth_timeline, ranked_sectors
 
+#formatting of currency
+def format_money(value):
+    sign = "-" if value < 0 else ""
+    amount = abs(value)
+    if amount >= 1e9:
+        return f"{sign}${amount/1e9:,.1f}B"
+    if amount >= 1e6:
+        return f"{sign}${amount/1e6:,.1f}M"
+    return f"{sign}${amount/1e3:,.0f}K"
+
 #title
 st.title("Solano County Economic Scenario Planner")
 
@@ -17,7 +27,7 @@ sector_list = multiplier_df["sector_name"].tolist()
 select_sector = st.sidebar.selectbox("Select Industry Sector", sector_list)
 
 #direct job change sidebar set with in increment of 10
-direct_job_change = st.sidebar.number_input("Change in Direct Jobs", value=0, step=10)
+direct_job_change = st.sidebar.number_input("Change in Direct Jobs", value=0, step=10, min_value=-50000, max_value=50000)
 
 #radio sidebar that chooses between 2 types of multipliers
 type_labels = {"type1": "Type I",
@@ -26,6 +36,7 @@ mult_type = st.sidebar.radio("Multiplier Type", ["type1", "type2"], format_func=
 
 
 avg_wage = st.sidebar.number_input("Average Annual Wage ($)", value=62000, step=1000)
+
 
 #grab bls employment data and clean it up then pass it to pd
 BACKUP_FILE = "data/bls_backup.csv"
@@ -112,10 +123,13 @@ if section == "Current Employment Status":
         st.metric("Employment Gap vs. California(Basis Points)", f"{employ_gap[4]:.1f} pts")
 
     with col5:
-        st.metric("Estimated Annual Lost Wages", f"${employ_gap[3]/1e6:,.1f}M")
+        st.metric("Estimated Annual Lost Wages", format_money(employ_gap[3]))
 
 #tab 2
 if section == "Investment Scenario Analysis":
+
+    if direct_job_change == 0:
+        st.info("Enter a change in direct jobs in the sidebar to see the impact.")
 
     st.caption("Multipliers are national industry averages (EPI, 2019), not Solano-specific, so results are estimates.")
 
@@ -148,7 +162,7 @@ if section == "Investment Scenario Analysis":
         st.metric("Indirect Jobs (Ripple)", f"{indirect_jobs:,.0f}")
 
     with col3:
-        st.metric("Total Wage Impact", f"${total_wages/1e6:,.1f}M")
+        st.metric("Total Wage Impact", format_money(total_wages))
 
     fig2 = go.Figure(go.Bar(x=["Direct", "Indirect", "Total"], y=[direct_job_change, indirect_jobs, total_jobs]))
     fig2.update_layout(title="Job Impact by Stage", yaxis_title="Jobs")
