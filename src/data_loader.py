@@ -19,8 +19,6 @@ solano_series = {
 #retrive data from bls api 
 def get_solano_data():
     url = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
-
-
     headers = {"Content-Type": "application/json"}
 
     #requesting solano series matching the specific series ID from 2020-2025 with specified api key
@@ -31,9 +29,22 @@ def get_solano_data():
         "registrationKey": bls_api_key
     }
     
-    retrieved = requests.post(url, json=request_data, headers=headers)
+    try:
+        retrieved = requests.post(url, json=request_data, headers=headers, timeout=30)
+        retrieved.raise_for_status()
+        data = retrieved.json()
+    except requests.exceptions.RequestException as error:
+        raise RuntimeError("Could not reach the BLS data service.") from error
 
-    return retrieved.json()
+    if data.get("status") != "REQUEST_SUCCEEDED":
+        raise RuntimeError(f"BLS returned an error: {data.get('message')}")
+
+
+    for series in data["Results"]["series"]:
+        if not series["data"]:
+            raise RuntimeError(f"BLS returned no data for series {series['seriesID']}.")
+
+    return data
 
 
 #clean up the json data into a list of tuples

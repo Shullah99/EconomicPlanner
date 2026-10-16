@@ -30,7 +30,14 @@ avg_wage = st.sidebar.number_input("Average Annual Wage ($)", value=62000, step=
 def load_employment_data():
     return clean_dataframe(cleaned_data(get_solano_data()))
 
-employment_data = load_employment_data()
+try:
+    employment_data = load_employment_data()
+
+except RuntimeError as error:
+    st.error("Live employment data is temporarily unavailable. Please try again in a few minutes.")
+    st.caption(str(error))
+    st.stop()
+
 
 section = st.radio(
     "Section",
