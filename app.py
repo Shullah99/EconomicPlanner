@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import os
+from datetime import datetime
 from src.data_loader import load_multipliers, get_solano_data, clean_dataframe, cleaned_data
 from src.multiplier import employment_gap, mult_effect, growth_timeline, ranked_sectors
 
@@ -26,18 +28,25 @@ mult_type = st.sidebar.radio("Multiplier Type", ["type1", "type2"], format_func=
 avg_wage = st.sidebar.number_input("Average Annual Wage ($)", value=62000, step=1000)
 
 #grab bls employment data and clean it up then pass it to pd
+BACKUP_FILE = "data/bls_backup.csv"
+
 @st.cache_data(ttl=86400)
 def load_employment_data():
-    return clean_dataframe(cleaned_data(get_solano_data()))
+    df = clean_dataframe(cleaned_data(get_solano_data()))
+    df.to_csv(BACKUP_FILE, index=False)  # runs only when the live pull succeeds
+    return df
 
 try:
     employment_data = load_employment_data()
-
 except RuntimeError as error:
-    st.error("Live employment data is temporarily unavailable. Please try again in a few minutes.")
-    st.caption(str(error))
-    st.stop()
-
+    if os.path.exists(BACKUP_FILE):
+        employment_data = pd.read_csv(BACKUP_FILE, parse_dates=["date"])
+        saved_on = datetime.fromtimestamp(os.path.getmtime(BACKUP_FILE)).strftime("%B %d, %Y")
+        st.warning(f"Live data is unavailable, so this page is showing a saved copy from {saved_on}.")
+    else:
+        st.error("Live employment data is temporarily unavailable. Please try again in a few minutes.")
+        st.caption(str(error))
+        st.stop()
 
 section = st.radio(
     "Section",
