@@ -94,6 +94,10 @@ if section == "Current Employment Status":
     # employment gap, now with the real wage and state rate
     employ_gap = employment_gap(current_employment_rate, current_labor_size, avg_wage, state_employment_rate)
 
+
+    st.caption(f"Shows how far Solano County is from a 96% employment target (share of the labor force employed). The 96% target is an assumption, not an official standard.")
+
+
     #guage for employment
     figure = go.Figure(go.Indicator(
     mode="gauge+number",
@@ -103,7 +107,6 @@ if section == "Current Employment Status":
     ))
     st.plotly_chart(figure)
     st.caption(f"Data as of {latest_date:%B %Y}. Shows the share of the labor force that is employed (100 minus the unemployment rate). The labor force counts only people working or actively looking for work.")
-
 
     #key metrics for labor size
     column1, column2, column3 = st.columns(3)
@@ -127,6 +130,8 @@ if section == "Current Employment Status":
 
 #tab 2
 if section == "Investment Scenario Analysis":
+
+    st.caption("Estimates the jobs and wages supported by a change in direct jobs in one sector, using national average multipliers.")
 
     if direct_job_change == 0:
         st.info("Enter a change in direct jobs in the sidebar to see the impact.")
@@ -170,6 +175,9 @@ if section == "Investment Scenario Analysis":
 
 #tab 3
 if section == "Where to Invest":
+
+    st.caption("Ranks sectors by jobs supported per direct job. This is not a return on investment.")
+
     ranked_df, top_5, bottom_5 = ranked_sectors(mult_type)
 
     if mult_type == "type1":
@@ -189,3 +197,6 @@ if section == "Where to Invest":
     top_value = ranked_df[mult_column].iloc[0]
     st.write(f"**{top_sector}** has the highest ripple effect per direct job ({top_value:.1f} total jobs for every direct job), based on national industry averages.")
     st.caption("This ranks ripple effect per direct job, not return per dollar invested, and it doesn't mean Solano has a large presence in that industry.")
+
+st.divider()
+st.caption("Data: BLS LAUS (Solano County and California, not seasonally adjusted); EPI (2019) national multipliers; Texas Comptroller estimate for Government. Multipliers are national averages, not Solano-specific. Source code: github.com/Shullah99/EconomicPlanner")
