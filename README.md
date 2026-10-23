@@ -1,20 +1,42 @@
-#Econ Scope is a project meant to plan out scenarios within Solano County
+# EconScope V1
 
-###What it plans to do
-The purpose of this program is to model how employment investment within specific sectors or industries
-have a ripple effect within an economy. This is to help decision makers decide where to invest with maximum returns
+A dashboard showing how employment changes in one industry ripples through Solano County, CA.
 
-###Progress Log
-Week 1: 
-  Researched NAICS sectors and Solano County's prominent industries (agriculture, healthcare, 
-  governance/Travis AFB, retail/logistics, construction, etc).
-  Next a working BLS API integration program was built pulling 
-  Solano County unemployment rate, unemployment, employment, and 
-  labor force data(2020-2025) via Local Area Unemployment 
-  Statistics(LAUS).
+**Live app:** https://economicscenarioplanner.streamlit.app/
 
-###Data Sources
-U.S. Bureau of Labor Statistics (BLS) API
+## What it does
+- **Current Employment Status:** Solano County unemployment, the gap to a 96% employment benchmark, workers needed to close it, consumption capacity, a comparison with the state of California, and estimated annual lost wages.
+- **Investment Scenario Analysis:** pick a sector and what changes in direct jobs to see total jobs, indirect jobs, and wage impact using Type I or Type II multipliers.
+- **Where To Invest:** ranks 24 sectors by multiplier, per direct job.
 
-###Tech Stack
-Python | Pandas | Requests | python-dotenv
+## How to read it
+The multiplier shows a ripple effect of additional jobs added for each direct job input, not a return on investment analysis.
+
+This is to help decision makers get a fuller picture by comparing how employment changes ripple through the local economy
+
+
+## Method
+- Type I = 1 + supplier / 100; Type II = 1 + total indirect / 100.
+- Employment gap uses an assumed 96% benchmark.
+
+## Limitations
+- Multipliers are 2019 national averages, not Solano-specific.
+- Growth timelines are illustrative estimates.
+- The 96% benchmark is an assumption, and one blended wage is used for all sectors.
+- Utilities ranks highest because the measure is ripple per direct job, not return per dollar or local presence.
+- Free-tier hosting: the app may sleep when idle, so open the link before a demo.
+
+
+## Data Sources
+- **Employment data:** U.S. Bureau of Labor Statistics LAUS series for Solano County and California, 2020-2026, not seasonally adjusted, model-based and subject to revision.
+- **Multipliers:** Economic Policy Institute (Jan 2019), "Updated employment multipliers for the U.S. economy," national averages per 100 direct jobs.
+- **Government sector:** Texas Comptroller state average (approximate), Type II only.
+
+## Tech Stack
+Python | Pandas | Requests | python-dotenv | Streamlit | Plotly
+
+## Roadmap
+V2: A business-level cost model for Solano County using local data
+
+## Author
+- **Frandu Taylor**
